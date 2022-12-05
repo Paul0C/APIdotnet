@@ -44,7 +44,25 @@ namespace ApiCSharp.Controllers
             _veiculoRepository.InsereVeiculo(veiculo);
             return await _veiculoRepository.SaveChangesAsync()
                 ? Ok("Veículo adicionado com sucesso!")
-                : BadRequest("Usuário não adicionado.");
+                : BadRequest("Veículo não adicionado.");
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Put([FromBody] Veiculo veiculo)
+        {
+            _veiculoRepository.AtualizaVeiculo(veiculo);
+            return await _veiculoRepository.SaveChangesAsync()
+                ? Ok("Veículo atualizado com sucesso!")
+                : BadRequest("Não foi possível atualizar o véiculo informado.");
+        }
+
+        [HttpDelete("{Id}")]
+        public async Task<IActionResult> Delete(int Id)
+        {
+            _veiculoRepository.DeletaVeiculo(Id);
+            return await _veiculoRepository.SaveChangesAsync()
+                ? Ok("Veículo removido com sucesso!")
+                : BadRequest("Não foi possível remover o véiculo informado.");
         }
     }
 }

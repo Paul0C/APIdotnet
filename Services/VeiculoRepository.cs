@@ -19,7 +19,7 @@ namespace ApiCSharp.Services
 
         public void AtualizaVeiculo(Veiculo veiculo)
         {
-            throw new NotImplementedException();
+            _veiculoContext.Veiculos.Update(veiculo);
         }
 
         public async Task<Veiculo> ConsultaVeiculoPorId(int Id)
@@ -29,7 +29,8 @@ namespace ApiCSharp.Services
 
         public void DeletaVeiculo(int Id)
         {
-            throw new NotImplementedException();
+            var veiculo = _veiculoContext.Veiculos.FirstOrDefault(x => x.Id == Id);
+            _veiculoContext.Veiculos.Remove(veiculo);
         }
 
         public void InsereVeiculo(Veiculo veiculo)
