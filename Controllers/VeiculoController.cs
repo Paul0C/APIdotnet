@@ -47,10 +47,17 @@ namespace ApiCSharp.Controllers
                 : BadRequest("Veículo não adicionado.");
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Put([FromBody] Veiculo veiculo)
+        [HttpPut("{Id}")]
+        public async Task<IActionResult> Put(int Id, [FromBody] Veiculo veiculo)
         {
-            _veiculoRepository.AtualizaVeiculo(veiculo);
+            var veiculoDoBanco = await _veiculoRepository.ConsultaVeiculoPorId(Id);
+            if (veiculoDoBanco == null) return NotFound("Veículo não encontrado.");
+
+            veiculoDoBanco.Marca = veiculo.Marca == null ? veiculoDoBanco.Marca : veiculo.Marca;
+            veiculoDoBanco.Modelo = veiculo.Modelo == null ? veiculoDoBanco.Modelo : veiculo.Modelo;
+            veiculoDoBanco.Ano = veiculo.Ano ?? veiculoDoBanco.Ano;
+
+            _veiculoRepository.AtualizaVeiculo(veiculoDoBanco);
             return await _veiculoRepository.SaveChangesAsync()
                 ? Ok("Veículo atualizado com sucesso!")
                 : BadRequest("Não foi possível atualizar o véiculo informado.");
